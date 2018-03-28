@@ -15,7 +15,7 @@ Acceptance Criteria:
 
 Task Breakdown:
 
-- [0.4h] Add functionality to cancel creation if required parameters are not given
+- [0.4h] Add functionality to cancel creation if required parameters are not given [Spent 0.3h]
     Check for null values and proper valid input for the data types needed
 - [0.3h] Add uniqueness checking on email address when creating an owner account
     Make a database call to get user account details where the email is the email provided and check if any rows are returned.
