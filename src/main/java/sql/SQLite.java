@@ -11,7 +11,7 @@ public class SQLite {
     }
 
     public void addOwner(String email, String firstNames, String lastName, String password) {
-        if (email != null && email.length() > 0) new InvalidParameterException("Email is invalid (must be non-null and have length > 0)");
+        if (email != null && email.length() > 0) throw new InvalidParameterException("Email is invalid (must be non-null and have length > 0)");
         if (firstNames != null && firstNames.length() > 0) throw new InvalidParameterException("Firstnames is invalid (must be non-null and have length > 0)");
         if (lastName != null && lastName.length() > 0) throw new InvalidParameterException("Lastname is invalid (must be non-null and have length > 0)");
         if (password != null && password.length() > 0) throw new InvalidParameterException("Password is invalid (must be non-null and have length > 0)");
