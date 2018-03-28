@@ -1,0 +1,42 @@
+User story 1: Owner subscription
+
+"As an owner, I want to create an account on the system with my email address so that I can add and retrieve my vehicles later on."
+
+Acceptance Criteria:
+
+- An owner must submit his firstname(s), lastname, email address and password all at once.
+- The submitted details must be stored into the database.
+- The email address is used as the owner id on the system, as well as his/her login.
+- When the registration of the owner is done, a confirmation message is displayed on the screen.
+- After the registration of an email address, no new registration is allowed with the same email address.
+- If an owner tries to register with an existing email, an error message saying that email is already in use must be displayed on the screen.
+
+Task Breakdown:
+
+- Add functionality to cancel creation if required parameters are not given
+- Add uniqueness checking on email address when creating an owner account
+- Insert owner details into the database
+- Add functionality to show feedback to the user
+
+
+User story 2: Vehicle subscription
+
+"As an owner, I want to register my vehicle so that I can speed up my furture WoF inspections."
+
+Acceptance Criteria:
+
+- The user must be logged in to an owner account to register a vehicle.
+- An owner must submit the VIN number, make, model, fuel type, odometer reading, first registration year in New Zealand, and WoF expiry date.
+- One owner can register multiple (or zero) vehicles
+- The submitted details must be stored into the database.
+- The VIN number is used as a vehicles primary identifier.
+- After the vehicle has been registered, no new vehicle can be registered under the same VIN number.
+- If a user tries to register with a VIN number that exists in the database, an error message saying that VIN numbe is already in used is displayed.
+
+Task Breakdown:
+
+- Check the user is logged in to an account
+- Add functionality to cancel the registration if the required parameters are not given
+- Add uniqueness checking on VIN number when registering a vehicle
+- Insert the vehicle details into the database
+- Add functionality to show feedback to the user
