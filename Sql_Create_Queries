@@ -1,0 +1,2 @@
+create table owner (email text primary key, first_names text, last_name text, password text);
+create table vehicle (vin text primary key, make text, model text, fuelType text, odometer int, first_registration_date datetime, wof_expiry_date datetime, owner_email text, foreign key (owner_email) references owner(email));
