@@ -2,6 +2,8 @@ User story 1: Owner subscription
 
 "As an owner, I want to create an account on the system with my email address so that I can add and retrieve my vehicles later on."
 
+Original estimate: 1.5h
+
 Acceptance Criteria:
 
 - An owner must submit his firstname(s), lastname, email address and password all at once.
@@ -13,19 +15,24 @@ Acceptance Criteria:
 
 Task Breakdown:
 
-- Add functionality to cancel creation if required parameters are not given
-- Add uniqueness checking on email address when creating an owner account
-- Insert owner details into the database
-- Add functionality to show feedback to the user
+- [0.4h] Add functionality to cancel creation if required parameters are not given
+    Check for null values and proper valid input for the data types needed
+- [0.3h] Add uniqueness checking on email address when creating an owner account
+    Make a database call to get user account details where the email is the email provided and check if any rows are returned.
+- [0.4h] Insert owner details into the database
+    Query the database to insert into the owner table, providing all owner fields (firstname(s), lastname, email address and password)
+- [0.3h] Add functionality to show feedback to the user
+    Print a message to console that either describes the successful creation of the owner account, or the appropriate error.
 
 
 User story 2: Vehicle subscription
 
 "As an owner, I want to register my vehicle so that I can speed up my furture WoF inspections."
 
+Original estimate: 2.0h
+
 Acceptance Criteria:
 
-- The user must be logged in to an owner account to register a vehicle.
 - An owner must submit the VIN number, make, model, fuel type, odometer reading, first registration year in New Zealand, and WoF expiry date.
 - One owner can register multiple (or zero) vehicles
 - The submitted details must be stored into the database.
@@ -35,8 +42,12 @@ Acceptance Criteria:
 
 Task Breakdown:
 
-- Check the user is logged in to an account
-- Add functionality to cancel the registration if the required parameters are not given
-- Add uniqueness checking on VIN number when registering a vehicle
-- Insert the vehicle details into the database
-- Add functionality to show feedback to the user
+- [0.5h] Add functionality to cancel the registration if the required parameters are not given
+    Check for null values and proper valid input for the data types needed
+- [0.4h] Add uniqueness checking on VIN number when registering a vehicle
+    Make a database call to get vehicle registration details where the VIN number is the VIN number provided and check if any rows are returned.
+- [0.5h] Insert the vehicle details into the database
+    Query the database to insert into the vehicle table, providing all vehicle fields (VIN, make, model, fuel type, odometer reading, first registration year in NZ, WoF expiry date)
+- [0.3h] Add functionality to show feedback to the user
+    Print a message to console that either describes the successful registration of the vehicle, or the appropriate error.
+
