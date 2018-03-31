@@ -15,11 +15,11 @@ Acceptance Criteria:
 
 Task Breakdown:
 
-- [0.4h] Add functionality to cancel creation if required parameters are not given [Spent 0.3h]
+- [0.4h] Add functionality to cancel creation if required parameters are not given [Spent 0.4h]
     Check for null values and proper valid input for the data types needed
-- [0.3h] Add uniqueness checking on email address when creating an owner account [Spent 0.3h]
+- [0.3h] Add uniqueness checking on email address when creating an owner account [Spent 0.5h]
     Make a database call to get user account details where the email is the email provided and check if any rows are returned.
-- [0.4h] Insert owner details into the database [Spent 0.2h]
+- [0.4h] Insert owner details into the database [Spent 0.4h]
     Query the database to insert into the owner table, providing all owner fields (firstname(s), lastname, email address and password)
 - [0.3h] Add functionality to show feedback to the user [Spent 0.2h]
     Print a message to console that either describes the successful creation of the owner account, or the appropriate error.

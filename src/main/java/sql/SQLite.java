@@ -5,7 +5,15 @@ import java.time.LocalDate;
 
 public class SQLite {
 
-    private ResultSet getOwnersByEmail(Connection connection, String email) throws SQLException {
+    /**
+     * Returns a set of records of owner accounts that have the provided email.
+     * This will always be length 0 or 1 as email is the primary key
+     * @param connection The SQL connection
+     * @param email The email to search for
+     * @return The ResultSet containing the matching account
+     * @throws SQLException If an error occurs during a database action
+     */
+    public ResultSet getOwnersByEmail(Connection connection, String email) throws SQLException {
         assert(connection != null);
         assert(email != null && email.length() > 0);
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM owner WHERE email=?");
@@ -46,7 +54,7 @@ public class SQLite {
         System.out.println("User added successfully");
     }
 
-    private ResultSet getRegistrationsByVin(Connection connection, String vin) throws SQLException {
+    public ResultSet getRegistrationsByVin(Connection connection, String vin) throws SQLException {
         assert(connection != null);
         assert(vin != null && vin.length() > 0);
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle WHERE vin=?");
@@ -54,7 +62,7 @@ public class SQLite {
         return statement.executeQuery();
     }
 
-    public void registerVehicle(Connection connection, String email, String vin, String make, String model, String fuelType, int odometer, LocalDate firstRegistrationDate, LocalDate wofExpiryDate) throws SQLException {
+    public void registerVehicle(Connection connection, String email, String vin, String make, String model, String vehicleType, String fuelType, int odometer, LocalDate firstRegistrationDate, LocalDate wofExpiryDate) throws SQLException {
         if (email == null || email.length() == 0) {
             System.out.println("Email is invalid (must be non-null and have length > 0)");
             return;
@@ -69,6 +77,17 @@ public class SQLite {
         }
         if (model == null || model.length() == 0) {
             System.out.println("Model is invalid (must be non-null and have length > 0");
+            return;
+        }
+        String[] vehicleTypes = {"MA", "MB", "MC", "T", "O"};
+        boolean vehicleTypeValid = false;
+        for (String type : vehicleTypes) {
+            if (vehicleType.toUpperCase().equals(type)) {
+                vehicleTypeValid = true;
+            }
+        }
+        if (!vehicleTypeValid) {
+            System.out.println("Vehicle type must be either MA, MB, MC, T, or O");
             return;
         }
         String[] fuelTypes = {"diesel", "petrol", "electric", "gas", "other"};
