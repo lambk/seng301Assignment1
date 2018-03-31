@@ -17,11 +17,11 @@ Task Breakdown:
 
 - [0.4h] Add functionality to cancel creation if required parameters are not given [Spent 0.3h]
     Check for null values and proper valid input for the data types needed
-- [0.3h] Add uniqueness checking on email address when creating an owner account
+- [0.3h] Add uniqueness checking on email address when creating an owner account [Spent 0.3h]
     Make a database call to get user account details where the email is the email provided and check if any rows are returned.
-- [0.4h] Insert owner details into the database
+- [0.4h] Insert owner details into the database [Spent 0.2h]
     Query the database to insert into the owner table, providing all owner fields (firstname(s), lastname, email address and password)
-- [0.3h] Add functionality to show feedback to the user
+- [0.3h] Add functionality to show feedback to the user [Spent 0.2h]
     Print a message to console that either describes the successful creation of the owner account, or the appropriate error.
 
 
@@ -33,7 +33,8 @@ Original estimate: 2.0h
 
 Acceptance Criteria:
 
-- An owner must submit the VIN number, make, model, fuel type, odometer reading, first registration year in New Zealand, and WoF expiry date.
+- An owner must submit the VIN number, make, model, fuel type, odometer reading, first registration year in New Zealand, and WoF expiry date, along with the email specifying which owner is committing the registration.
+- If the provided email doesn't belong to a registered owner, cancel operation and print a message
 - One owner can register multiple (or zero) vehicles
 - The submitted details must be stored into the database.
 - The VIN number is used as a vehicles primary identifier.
@@ -42,12 +43,13 @@ Acceptance Criteria:
 
 Task Breakdown:
 
-- [0.5h] Add functionality to cancel the registration if the required parameters are not given
+- [0.5h] Add functionality to cancel the registration if the required parameters are not given [Spent 0.2h]
     Check for null values and proper valid input for the data types needed
-- [0.4h] Add uniqueness checking on VIN number when registering a vehicle
+- [0.2h] Check the email provided belongs to an account						[Spent 0.1h]
+- [0.4h] Add uniqueness checking on VIN number when registering a vehicle			[Spent 0.2h]
     Make a database call to get vehicle registration details where the VIN number is the VIN number provided and check if any rows are returned.
-- [0.5h] Insert the vehicle details into the database
+- [0.5h] Insert the vehicle details into the database						[Spent 0.1h]
     Query the database to insert into the vehicle table, providing all vehicle fields (VIN, make, model, fuel type, odometer reading, first registration year in NZ, WoF expiry date)
-- [0.3h] Add functionality to show feedback to the user
+- [0.3h] Add functionality to show feedback to the user						[Spent 0.1h]
     Print a message to console that either describes the successful registration of the vehicle, or the appropriate error.
 
