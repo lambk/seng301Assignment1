@@ -23,6 +23,24 @@ public class SQLite {
     }
 
     /**
+     * Prints a list of all owners in the database
+     * @param connection The connection the database
+     * @throws SQLException If there is an error reading from the database
+     */
+    public void printOwners(Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM owner");
+        ResultSet rows = statement.executeQuery();
+        boolean first = true;
+        while (rows.next()) {
+            if (!first) System.out.println();
+            System.out.println("--" + rows.getString("email") + "--");
+            System.out.println(rows.getString("first_names"));
+            System.out.println(rows.getString("last_name"));
+            first = false;
+        }
+    }
+
+    /**
      * Adds an owner account to the database.
      * Includes validation of fields
      * All fields must be non-null and have length > 0
@@ -57,7 +75,7 @@ public class SQLite {
 
         ResultSet ownersWithEmail = getOwnersByEmail(connection, email);
         if (ownersWithEmail.next()) {
-            System.out.println("Email is already in use");
+            System.out.println("Email " + email + " is already in use");
             return;
         }
 
@@ -68,7 +86,7 @@ public class SQLite {
         statement.setString(3, lastName);
         statement.setString(4, password);
         statement.executeUpdate();
-        System.out.println("User added successfully");
+        System.out.println("User " + email + " added successfully");
     }
 
     /**
@@ -102,6 +120,26 @@ public class SQLite {
     }
 
     /**
+     * Prints a list of all vehicle registrations in the database
+     * @param connection The connection the database
+     * @throws SQLException If there is an error reading from the database
+     */
+    public void printRegistrations(Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle");
+        ResultSet rows = statement.executeQuery();
+        boolean first = true;
+        while (rows.next()) {
+            if (!first) System.out.println();
+            System.out.println("--" + rows.getString("vin") + "--");
+            System.out.println("Belongs to " + rows.getString("owner_email"));
+            System.out.println(rows.getString("make"));
+            System.out.println(rows.getString("model"));
+            System.out.println(rows.getInt("year"));
+            first = false;
+        }
+    }
+
+    /**
      * Adds a vehicle registration to the database.
      * Includes validation of fields
      * All fields must be non-null and have length > 0
@@ -116,6 +154,7 @@ public class SQLite {
      * @param vin                   The VIN of the vehicle
      * @param make                  The make of the vehicle
      * @param model                 The model of the vehicle
+     * @param year                  The manufacture year of the vehicle
      * @param vehicleType           The vehicle type (Must be MA, MB, MC, T, or O)
      * @param fuelType              The fuel type (Must be diesel, petrol, electric, gas, or other)
      * @param odometer              The odometer reading of the vehicle
@@ -123,7 +162,7 @@ public class SQLite {
      * @param wofExpiryDate         The LocalDate of when the current WoF expires
      * @throws SQLException If there is an error registering the vehicle or checking the presence of an existing account or registration
      */
-    public void registerVehicle(Connection connection, String email, String vin, String make, String model, String vehicleType, String fuelType, int odometer, LocalDate firstRegistrationDate, LocalDate wofExpiryDate) throws SQLException {
+    public void registerVehicle(Connection connection, String email, String vin, String make, String model, int year, String vehicleType, String fuelType, int odometer, LocalDate firstRegistrationDate, LocalDate wofExpiryDate) throws SQLException {
         //Validating the fields
         if (email == null || email.length() == 0) {
             System.out.println("Email is invalid (must be non-null and have length > 0)");
@@ -142,6 +181,10 @@ public class SQLite {
             return;
         }
         //Checking for valid vehicle type
+        if (vehicleType == null) {
+            System.out.println("Vehicle type cannot be null");
+            return;
+        }
         String[] vehicleTypes = {"MA", "MB", "MC", "T", "O"};
         boolean vehicleTypeValid = false;
         for (String type : vehicleTypes) {
@@ -154,17 +197,24 @@ public class SQLite {
             return;
         }
         //Checking for valid fuel type
-        String[] fuelTypes = {"diesel", "petrol", "electric", "gas", "other"};
-        boolean fuelTypeValid = false;
-        for (String type : fuelTypes) {
-            if (fuelType.toLowerCase().equals(type)) {
-                fuelTypeValid = true;
+        if (!vehicleType.equals("T")) {
+            if (fuelType == null) {
+                System.out.println("Fuel type cannot be null for non-trailers");
+                return;
+            }
+            String[] fuelTypes = {"diesel", "petrol", "electric", "gas", "other"};
+            boolean fuelTypeValid = false;
+            for (String type : fuelTypes) {
+                if (fuelType.toLowerCase().equals(type)) {
+                    fuelTypeValid = true;
+                }
+            }
+            if (!fuelTypeValid) { //Trailers do not need a fuel type
+                System.out.println("Fuel type must be either diesel, petrol, electric, gas, or other");
+                return;
             }
         }
-        if (!fuelTypeValid) {
-            System.out.println("Fuel type must be either diesel, petrol, electric, gas, or other");
-            return;
-        }
+
         if (firstRegistrationDate.isAfter(LocalDate.now())) {
             System.out.println("First registration date must be in the past");
             return;
@@ -172,27 +222,28 @@ public class SQLite {
 
         ResultSet ownersWithEmail = getOwnersByEmail(connection, email);
         if (!ownersWithEmail.next()) {
-            System.out.println("No accounts exist under this email");
+            System.out.println("No accounts exist under " + email);
             return;
         }
 
         ResultSet vehiclesWithVin = getRegistrationsByVin(connection, vin.toUpperCase());
         if (vehiclesWithVin.next()) {
-            System.out.println("VIN is already registered under a vehicle");
+            System.out.println("A vehicle is already registered with vin " + vin);
             return;
         }
 
         //Registering the vehicle
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO vehicle VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO vehicle VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statement.setString(1, vin.toUpperCase());
         statement.setString(2, make);
         statement.setString(3, model);
-        statement.setString(4, vehicleType);
-        statement.setString(5, fuelType);
-        statement.setInt(6, odometer);
-        statement.setDate(7, Date.valueOf(firstRegistrationDate));
-        statement.setDate(8, Date.valueOf(wofExpiryDate));
-        statement.setString(9, email);
+        statement.setInt(4, year);
+        statement.setString(5, vehicleType);
+        statement.setString(6, fuelType);
+        statement.setInt(7, odometer);
+        statement.setDate(8, Date.valueOf(firstRegistrationDate));
+        statement.setDate(9, Date.valueOf(wofExpiryDate));
+        statement.setString(10, email);
         statement.executeUpdate();
         System.out.println("Vehicle " + vin.toUpperCase() + " successfully registered");
     }
@@ -208,5 +259,19 @@ public class SQLite {
         PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicle WHERE vin=?");
         statement.setString(1, vin);
         statement.executeUpdate();
+    }
+
+    /**
+     * Clears the vehicle and owner tables of all data
+     *
+     * @param connection The connection to the database
+     * @throws SQLException If there is an error deleting from either of the tables
+     */
+    public void clearData(Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicle");
+        statement.executeUpdate();
+        PreparedStatement statement1 = connection.prepareStatement("DELETE from owner");
+        statement1.executeUpdate();
+        System.out.println("Database cleared");
     }
 }

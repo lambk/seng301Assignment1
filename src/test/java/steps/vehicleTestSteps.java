@@ -39,7 +39,7 @@ public class vehicleTestSteps {
 
     @When("^I try to register the vehicle with vin \"([^\"]*)\" under email \"([^\"]*)\"$")
     public void iTryToRegisterTheVehicleWithVinUnderEmail(String vin, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, "Toyota", "Celica", "MA", "petrol", 150000, LocalDate.of(2000, 1, 1), LocalDate.of(2019, 1, 1));
+        db.registerVehicle(connection, email, vin, "Toyota", "Celica", 1994, "MA", "petrol", 150000, LocalDate.of(2000, 1, 1), LocalDate.of(2019, 1, 1));
     }
 
     @Then("^The vehicle database should contain a record under vin \"([^\"]*)\"$")
@@ -63,12 +63,12 @@ public class vehicleTestSteps {
 
     @And("^The vehicle with vin \"([^\"]*)\" and make \"([^\"]*)\" exists under email \"([^\"]*)\"$")
     public void theVehicleWithVinAndMakeExistsUnderEmail(String vin, String make, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, make, "model", "MA", "diesel", 1, LocalDate.of(1990, 1, 1), LocalDate.of(2019, 2, 2));
+        db.registerVehicle(connection, email, vin, make, "model", 2000, "MA", "diesel", 1, LocalDate.of(1990, 1, 1), LocalDate.of(2019, 2, 2));
     }
 
     @When("^I try to register the vehicle with vin \"([^\"]*)\" and make \"([^\"]*)\" under email \"([^\"]*)\"$")
     public void iTryToRegisterTheVehicleWithVinAndMakeUnderEmail(String vin, String make, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, make, "model", "MA", "gas", 12302, LocalDate.of(1995, 1, 1), LocalDate.of(2018, 12, 2));
+        db.registerVehicle(connection, email, vin, make, "model", 2005, "MA", "gas", 12302, LocalDate.of(1995, 1, 1), LocalDate.of(2018, 12, 2));
     }
 
     @Then("^The vehicle with vin \"([^\"]*)\" should have make \"([^\"]*)\"$")
@@ -82,6 +82,6 @@ public class vehicleTestSteps {
 
     @When("^I try to register the vehicle with vin \"([^\"]*)\" under email \"([^\"]*)\", but provide fueltype \"([^\"]*)\"$")
     public void iTryToRegisterTheVehicleWithVinUnderEmailButProvideFueltype(String vin, String email, String fuelType) throws Throwable {
-        db.registerVehicle(connection, email, vin, "make", "model", "MA", fuelType, 239393, LocalDate.of(1992, 4, 4), LocalDate.of(2018, 7, 7));
+        db.registerVehicle(connection, email, vin, "make", "model", 1997,"MA", fuelType, 239393, LocalDate.of(1992, 4, 4), LocalDate.of(2018, 7, 7));
     }
 }
