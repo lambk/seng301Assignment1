@@ -1,4 +1,5 @@
 Feature: Registering a vehicle
+
   Scenario: Registering one or more vehicles
     Given I am connected to the vehicle database
     And The owner with email "kla98@uclive.ac.nz" exists

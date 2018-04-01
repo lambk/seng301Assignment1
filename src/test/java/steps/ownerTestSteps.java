@@ -1,6 +1,5 @@
 package steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -30,7 +29,7 @@ public class ownerTestSteps {
     @And("^The user with email \"([^\"]*)\" and last name \"([^\"]*)\" exists$")
     public void theUserWithEmailAndLastNameExists(String email, String lastName) throws Throwable {
         ResultSet rows = db.getOwnersByEmail(connection, email);
-        if (!rows.next()){
+        if (!rows.next()) {
             db.addOwner(connection, email, "Joe", lastName, "qwerty");
             rows = db.getOwnersByEmail(connection, email);
             rows.next();

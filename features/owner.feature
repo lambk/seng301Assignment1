@@ -1,4 +1,5 @@
 Feature: Create an owner account
+
   Scenario: Adding new account
     Given I am connected to the owner database
     And The user with email "new.user@gmail.com" doesn't exist

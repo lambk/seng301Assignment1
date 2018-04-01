@@ -1,7 +1,5 @@
 package steps;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -9,11 +7,9 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 import sql.SQLite;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class vehicleTestSteps {
@@ -43,7 +39,7 @@ public class vehicleTestSteps {
 
     @When("^I try to register the vehicle with vin \"([^\"]*)\" under email \"([^\"]*)\"$")
     public void iTryToRegisterTheVehicleWithVinUnderEmail(String vin, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, "Toyota", "Celica", "MA", "petrol", 150000, LocalDate.of(2000,1,1), LocalDate.of(2019,1,1));
+        db.registerVehicle(connection, email, vin, "Toyota", "Celica", "MA", "petrol", 150000, LocalDate.of(2000, 1, 1), LocalDate.of(2019, 1, 1));
     }
 
     @Then("^The vehicle database should contain a record under vin \"([^\"]*)\"$")
@@ -67,12 +63,12 @@ public class vehicleTestSteps {
 
     @And("^The vehicle with vin \"([^\"]*)\" and make \"([^\"]*)\" exists under email \"([^\"]*)\"$")
     public void theVehicleWithVinAndMakeExistsUnderEmail(String vin, String make, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, make, "model", "MA", "diesel", 1, LocalDate.of(1990,1,1), LocalDate.of(2019, 2, 2));
+        db.registerVehicle(connection, email, vin, make, "model", "MA", "diesel", 1, LocalDate.of(1990, 1, 1), LocalDate.of(2019, 2, 2));
     }
 
     @When("^I try to register the vehicle with vin \"([^\"]*)\" and make \"([^\"]*)\" under email \"([^\"]*)\"$")
     public void iTryToRegisterTheVehicleWithVinAndMakeUnderEmail(String vin, String make, String email) throws Throwable {
-        db.registerVehicle(connection, email, vin, make, "model", "MA", "gas", 12302, LocalDate.of(1995,1,1), LocalDate.of(2018,12,2));
+        db.registerVehicle(connection, email, vin, make, "model", "MA", "gas", 12302, LocalDate.of(1995, 1, 1), LocalDate.of(2018, 12, 2));
     }
 
     @Then("^The vehicle with vin \"([^\"]*)\" should have make \"([^\"]*)\"$")
