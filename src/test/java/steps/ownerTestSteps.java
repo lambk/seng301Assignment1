@@ -1,4 +1,4 @@
-package steps.owner;
+package steps;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
@@ -8,14 +8,13 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 import sql.SQLite;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 
 public class ownerTestSteps {
-    SQLite db = new SQLite();
-    Connection connection;
+    private SQLite db = new SQLite();
+    private Connection connection;
 
     @Given("^I am connected to the owner database$")
     public void iAmConnectedToTheOwnerDatabase() throws Throwable {
@@ -25,8 +24,7 @@ public class ownerTestSteps {
 
     @And("^The user with email \"([^\"]*)\" doesn't exist$")
     public void theUserWithEmailDoesnTExist(String email) throws Throwable {
-        ResultSet rows = db.getOwnersByEmail(connection, email);
-        Assert.assertFalse(rows.next());
+        db.deleteOwner(connection, email);
     }
 
     @And("^The user with email \"([^\"]*)\" and last name \"([^\"]*)\" exists$")
@@ -73,5 +71,8 @@ public class ownerTestSteps {
         Assert.assertFalse(rows.next());
     }
 
-
+    @And("^Close the owner database$")
+    public void closeTheOwnerDatabase() throws Throwable {
+        connection.close();
+    }
 }

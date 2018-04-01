@@ -2,7 +2,7 @@ User story 1: Owner subscription
 
 "As an owner, I want to create an account on the system with my email address so that I can add and retrieve my vehicles later on."
 
-Original estimate: 1.5h
+Original estimate: 3
 
 Acceptance Criteria:
 
@@ -29,7 +29,7 @@ User story 2: Vehicle subscription
 
 "As an owner, I want to register my vehicle so that I can speed up my furture WoF inspections."
 
-Original estimate: 2.0h
+Original estimate: 5
 
 Acceptance Criteria:
 

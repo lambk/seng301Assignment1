@@ -8,14 +8,15 @@ public class SQLite {
     /**
      * Returns a set of records of owner accounts that have the provided email.
      * This will always be length 0 or 1 as email is the primary key
+     *
      * @param connection The SQL connection
-     * @param email The email to search for
+     * @param email      The email to search for
      * @return The ResultSet containing the matching account
      * @throws SQLException If an error occurs during a database action
      */
     public ResultSet getOwnersByEmail(Connection connection, String email) throws SQLException {
-        assert(connection != null);
-        assert(email != null && email.length() > 0);
+        assert (connection != null);
+        assert (email != null && email.length() > 0);
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM owner WHERE email=?");
         statement.setString(1, email);
         return statement.executeQuery();
@@ -54,9 +55,15 @@ public class SQLite {
         System.out.println("User added successfully");
     }
 
+    public void deleteOwner(Connection connection, String email) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM owner WHERE email=?");
+        statement.setString(1, email);
+        statement.executeUpdate();
+    }
+
     public ResultSet getRegistrationsByVin(Connection connection, String vin) throws SQLException {
-        assert(connection != null);
-        assert(vin != null && vin.length() > 0);
+        assert (connection != null);
+        assert (vin != null && vin.length() > 0);
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle WHERE vin=?");
         statement.setString(1, vin);
         return statement.executeQuery();
@@ -118,20 +125,27 @@ public class SQLite {
             return;
         }
 
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO vehicle VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO vehicle VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statement.setString(1, vin.toUpperCase());
         statement.setString(2, make);
         statement.setString(3, model);
-        statement.setString(4, fuelType);
-        statement.setInt(5, odometer);
-        statement.setDate(6, Date.valueOf(firstRegistrationDate));
-        statement.setDate(7, Date.valueOf(wofExpiryDate));
-        statement.setString(8, email);
+        statement.setString(4, vehicleType);
+        statement.setString(5, fuelType);
+        statement.setInt(6, odometer);
+        statement.setDate(7, Date.valueOf(firstRegistrationDate));
+        statement.setDate(8, Date.valueOf(wofExpiryDate));
+        statement.setString(9, email);
         statement.executeUpdate();
         System.out.println("Vehicle " + vin.toUpperCase() + " successfully registered");
     }
 
-    public ResultSet selectAllInspections(Connection connection) throws SQLException{
+    public void unregisterVehicle(Connection connection, String vin) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicle WHERE vin=?");
+        statement.setString(1, vin);
+        statement.executeUpdate();
+    }
+
+    public ResultSet selectAllInspections(Connection connection) throws SQLException {
         assert null != connection;
         System.out.println("Getting all inspections");
         PreparedStatement statement = connection.prepareStatement("select * from inspection");
@@ -139,7 +153,7 @@ public class SQLite {
         return resultSet;
     }
 
-    public ResultSet selectAllVehicles(Connection connection) throws SQLException{
+    public ResultSet selectAllVehicles(Connection connection) throws SQLException {
         assert null != connection;
         System.out.println("Getting all vehicles");
         PreparedStatement statement = connection.prepareStatement("select * from vehicle");
@@ -158,7 +172,7 @@ public class SQLite {
 
     public boolean checkUniqueInspection(Connection connection, String plate, int date) throws SQLException {
         ResultSet inspections = selectAllInspections(connection);
-        while(inspections.next()) {
+        while (inspections.next()) {
             if (inspections.getString("vehicle").equals(plate) && inspections.getInt("date") == date) {
                 return false;
             }
@@ -168,7 +182,7 @@ public class SQLite {
 
     public boolean checkUniquePlate(Connection connection, String plate) throws SQLException {
         ResultSet vehicles = selectAllVehicles(connection);
-        while(vehicles.next()) {
+        while (vehicles.next()) {
             if (vehicles.getString("plate").equals(plate)) {
                 return false;
             }
